@@ -79,7 +79,7 @@ class Passageiro(Pessoa):
 class Funcionario(Pessoa, IdentificavelMixin, Logavel):
     def __init__(self, nome, cpf, cargo, matricula):
         Pessoa.__init__(self, nome, cpf)
-        IdentificavelMixin.__init__(self)
+        IdentificavelMixin.__init__(self, id)
         self.cargo = cargo
         self.matricula = matricula
 
@@ -207,18 +207,3 @@ class Auditor(IdentificavelMixin, Logavel):
 
     def __str__(self):
         return f'Auditor {self.nome} (ID: {self.get_id()})'
-        
-
-
-# 
-# TODO: Implementar a classe Auditor
-# - Herda de IdentificavelMixin e Logavel
-# - Atributo: nome
-# - Métodos:
-#   • logar_entrada() → registra entrada no sistema
-#   • auditar_voo(voo) → verifica:
-#       ▸ passageiros ≤ capacidade
-#       ▸ existe ao menos 1 tripulante
-#     imprime relatório de conformidade
-#   • __str__() → "Auditor <nome> (ID: ...)"
-
