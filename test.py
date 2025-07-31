@@ -11,4 +11,3 @@ if __name__ == "__main__":
       • Mostrar saídas no console para validar implementações.
     """
     pass
-

@@ -15,20 +15,19 @@ class Logavel(ABC):
 # -------------------------------------------------
 class IdentificavelMixin:
     """Gera um ID único; combine-o com outras classes."""
-    def __init__(self):
-        # TODO: gerar e armazenar um ID (use uuid.uuid4())
-        pass
-    def get_id(self):
-        # TODO: retornar o ID
-        pass
+    def __init__(self, id):
+        self.id = self.gerar_id()
 
+    def gerar_id(self):
+        return uuid.uuid4()
+
+    def get_id(self):
+        return self.id
 
 class AuditavelMixin:
     """Fornece logs simples ao console."""
     def log_evento(self, evento: str):
-        # TODO: imprimir no formato  [LOG] <mensagem>
-        pass
-
+        print(f'[LOG] {evento}')
 
 # -------------------------------------------------
 # 3) Classe base Pessoa                          🡇
@@ -53,6 +52,7 @@ class Bagagem:
     def __init__(self, descricao: str, peso: float):
         self.descricao = descricao
         self.peso = peso  # kg
+
     def __str__(self):
         return f"{self.descricao} – {self.peso} kg"
 
@@ -62,17 +62,15 @@ class Bagagem:
 class Passageiro(Pessoa):
     """Herda de Pessoa e possui bagagens."""
     def __init__(self, nome: str, cpf: str):
-        def __init__(nome, cpf, bagagem):
-            super().__init__(nome, cpf)
-            self.bagagem = []
+        super().__init__(nome, cpf)
+        self.bagagens = []
         
     def adicionar_bagagem(self, bagagem: Bagagem):
-        self.bagagem.appen
+        self.bagagens.append(bagagem)
         
     def listar_bagagens(self):
-        # TODO: imprimir as bagagens
-        pass
-
+        for bagagem in self.bagagens:
+            print(bagagem)
 
 # -------------------------------------------------
 # 6) Funcionario (herança múltipla + mixins)     🡇
@@ -80,17 +78,16 @@ class Passageiro(Pessoa):
 
 class Funcionario(Pessoa, IdentificavelMixin, Logavel):
     def __init__(self, nome, cpf, cargo, matricula):
-        super().__init__(nome, cpf)
+        Pessoa.__init__(self, nome, cpf)
+        IdentificavelMixin.__init__(self)
         self.cargo = cargo
         self.matricula = matricula
 
-# TODO: Implementar a classe Funcionario
-# - Herda de Pessoa, IdentificavelMixin e Logavel (pode usar AuditavelMixin)
-# - Atributos: cargo, matricula
-# - Métodos:
-#   • exibir_dados() → imprime nome, cargo, matrícula e ID
-#   • logar_entrada() → registra no log
+    def exibir_dados(self):
+        print(f'{self._nome}, {self.cargo}, {self.matricula}, {self.get_id}')
 
+    def logar_entrada(self):
+        print(f'Entrada de {self._nome} registrada no LOG')
 
 # -------------------------------------------------
 # 7) MiniAeronave                                🡇
@@ -102,9 +99,7 @@ class MiniAeronave:
         self.capacidade = capacidade
 
     def resumo_voo(self):
-        # TODO: retornar string com modelo e capacidade
-        pass
-
+        return f'{self.modelo}: {self.capacidade} passageiros'
 
 # -------------------------------------------------
 # 8) Voo (composição com MiniAeronave)           🡇
@@ -123,23 +118,25 @@ class Voo:
 # - Atributos: numero_voo, origem, destino, aeronave
 # - Listas: passageiros, tripulacao
 
-    def adicionar_passageiros(self):
-        pass
+    def adicionar_passageiros(self, passageiro):
+        if passageiro in self.passageiros:
+            print('Passageiro já está no voo')
+        elif len(self.passageiros) >= self.aeronave.capacidade:
+            print('Capacidade máxima atingida')
+        else:
+            self.passageiros.append(passageiro)
 
-    def adicionar_tripulante(self):
-        pass
+    def adicionar_tripulante(self, funcionario):
+        if funcionario not in self.tripulacao:
+            self.tripulacao.append(funcionario)
 
     def listar_passageiros(self):
-        pass
+        for passageiro in self.passageiros:
+            print(passageiro)
 
     def listar_tripulacao(self):
-        pass
-
-# - Métodos:
-#   • adicionar_passageiro()  (verificar duplicidade e capacidade)
-#   • adicionar_tripulante()
-#   • listar_passageiros()
-#   • listar_tripulacao()
+        for tripulante in self.tripulacao:
+            print(tripulante)
 
 
 # -------------------------------------------------
@@ -167,12 +164,15 @@ class CompanhiaAerea:
         self.voos.append(voo)
 
     def buscar_voo(self, numero: str):
-        # TODO: retornar voo ou None
-        pass
-
+        for voo in self.voos:
+            if numero == voo.numero_voo:
+                return voo
+            else:
+                None
+        
     def listar_voos(self):
        for voo in self.voos:
-           print(voo)
+           print(f'Voo {voo.numero_voo}: {voo.origem} -> {voo.destino}')
 
     def valida_nome(self, nome):
         if len(nome) >= 3:
@@ -181,6 +181,36 @@ class CompanhiaAerea:
 # -------------------------------------------------
 # 10) Auditor (Identificável + Logável)          🡇
 # -------------------------------------------------
+
+class Auditor(IdentificavelMixin, Logavel):
+    def __init__(self, nome):
+        self.nome = nome
+
+    def logar_entrada(self):
+        print(f'Entrada de {self._nome} registrada no LOG')
+    
+    def auditar_voo(self, voo):
+        print(f'Auditoria do Voo {voo.numero_voo}:')
+        print(f'Passageiros: {len(voo.passageiros)}/{voo.aeronave.capacidade}')
+        print(f'Tripulantes: {len(voo.tripulacao)}')
+
+        conformidade = True
+        if len(voo.passageiros) > voo.aeronave.capacidade:
+            print('Excesso de passageiros!')
+            conformidade = False
+            if len(voo.tripulacao) < 1:
+                print('Sem tripulação mínima!')
+                conformidade = False
+
+        if conformidade:
+            print('✅ Voo conforme')
+
+    def __str__(self):
+        return f'Auditor {self.nome} (ID: {self.get_id()})'
+        
+
+
+# 
 # TODO: Implementar a classe Auditor
 # - Herda de IdentificavelMixin e Logavel
 # - Atributo: nome
