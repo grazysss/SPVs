@@ -10,7 +10,6 @@ class Logavel(ABC):
     def logar_entrada(self):
         pass
 
-
 # -------------------------------------------------
 # 2) Mixins                                      🡇
 # -------------------------------------------------
@@ -37,16 +36,15 @@ class AuditavelMixin:
 class Pessoa:
     """Classe base para pessoas do sistema."""
     def __init__(self, nome: str, cpf: str):
-        # TODO: armazenar nome e cpf como atributos protegidos
-        pass
+        self._nome = nome
+        self._cpf = cpf
+        
     @property
     def nome(self):
-        # TODO: retornar o nome
-        pass
-    def __str__(self):
-        # TODO: "Maria (123.456.789-00)"
-        pass
+        return self._nome
 
+    def __str__(self):
+        return f'{self._nome} ({self._cpf})'
 
 # -------------------------------------------------
 # 4) Bagagem — classe simples                    🡇
@@ -58,18 +56,19 @@ class Bagagem:
     def __str__(self):
         return f"{self.descricao} – {self.peso} kg"
 
-
 # -------------------------------------------------
 # 5) Passageiro                                  🡇
 # -------------------------------------------------
 class Passageiro(Pessoa):
     """Herda de Pessoa e possui bagagens."""
     def __init__(self, nome: str, cpf: str):
-        # TODO: chamar super().__init__ e criar lista vazia de bagagens
-        pass
+        def __init__(nome, cpf, bagagem):
+            super().__init__(nome, cpf)
+            self.bagagem = []
+        
     def adicionar_bagagem(self, bagagem: Bagagem):
-        # TODO: adicionar bagagem à lista
-        pass
+        self.bagagem.appen
+        
     def listar_bagagens(self):
         # TODO: imprimir as bagagens
         pass
@@ -78,6 +77,13 @@ class Passageiro(Pessoa):
 # -------------------------------------------------
 # 6) Funcionario (herança múltipla + mixins)     🡇
 # -------------------------------------------------
+
+class Funcionario(Pessoa, IdentificavelMixin, Logavel):
+    def __init__(self, nome, cpf, cargo, matricula):
+        super().__init__(nome, cpf)
+        self.cargo = cargo
+        self.matricula = matricula
+
 # TODO: Implementar a classe Funcionario
 # - Herda de Pessoa, IdentificavelMixin e Logavel (pode usar AuditavelMixin)
 # - Atributos: cargo, matricula
@@ -92,8 +98,9 @@ class Passageiro(Pessoa):
 class MiniAeronave:
     """Objeto da composição dentro de Voo."""
     def __init__(self, modelo: str, capacidade: int):
-        # TODO: armazenar modelo e capacidade
-        pass
+        self.modelo = modelo
+        self.capacidade = capacidade
+
     def resumo_voo(self):
         # TODO: retornar string com modelo e capacidade
         pass
@@ -102,9 +109,32 @@ class MiniAeronave:
 # -------------------------------------------------
 # 8) Voo (composição com MiniAeronave)           🡇
 # -------------------------------------------------
+
+class Voo:
+    def __init__(self, numero_voo, origem, destino, aeronave):
+        self.numero_voo = numero_voo
+        self.origem = origem
+        self.destino = destino
+        self.passageiros = []
+        self.tripulacao = []
+        aeronave = MiniAeronave
+
 # TODO: Implementar a classe Voo
 # - Atributos: numero_voo, origem, destino, aeronave
 # - Listas: passageiros, tripulacao
+
+    def adicionar_passageiros(self):
+        pass
+
+    def adicionar_tripulante(self):
+        pass
+
+    def listar_passageiros(self):
+        pass
+
+    def listar_tripulacao(self):
+        pass
+
 # - Métodos:
 #   • adicionar_passageiro()  (verificar duplicidade e capacidade)
 #   • adicionar_tripulante()
@@ -118,26 +148,35 @@ class MiniAeronave:
 class CompanhiaAerea:
     """Agrupa seus voos (has-a)."""
     def __init__(self, nome: str):
-        # TODO: validar nome (≥ 3 letras) e criar lista vazia de voos
-        pass
+        if self.valida_nome(nome):
+            self._nome = nome
+        else: 
+            print('Nome inválido')
+        self.voos = []
+
     @property
     def nome(self):
-        # TODO: retornar nome
-        pass
+        return self._nome
+    
     @nome.setter
     def nome(self, novo_nome: str):
-        # TODO: validar + atualizar nome
-        pass
+        if self.valida_nome(novo_nome):
+            self._nome = novo_nome
+
     def adicionar_voo(self, voo):
-        # TODO: adicionar voo à lista
-        pass
+        self.voos.append(voo)
+
     def buscar_voo(self, numero: str):
         # TODO: retornar voo ou None
         pass
-    def listar_voos(self):
-        # TODO: imprimir todos os voos
-        pass
 
+    def listar_voos(self):
+       for voo in self.voos:
+           print(voo)
+
+    def valida_nome(self, nome):
+        if len(nome) >= 3:
+            return True
 
 # -------------------------------------------------
 # 10) Auditor (Identificável + Logável)          🡇
