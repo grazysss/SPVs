@@ -19,7 +19,7 @@ class IdentificavelMixin:
         self.id = self.gerar_id()
 
     def gerar_id(self):
-        self.id = uuid.uuid4()
+        return uuid.uuid4()
 
     def get_id(self):
         return self.id
@@ -152,26 +152,35 @@ class Voo:
 # -------------------------------------------------
 class CompanhiaAerea:
     """Agrupa seus voos (has-a)."""
-    def __init__(self, nome: str):
-        # TODO: validar nome (≥ 3 letras) e criar lista vazia de voos
-        pass
+    def __init__(self, nome):
+        if len(nome) <= 3:
+            raise ValueError ("O nome tem que ter mais de 3 caracteres")
+        else:
+            self._nome = nome
+            self.voos = []
     @property
     def nome(self):
-        # TODO: retornar nome
-        pass
+        return self._nome
+        
     @nome.setter
     def nome(self, novo_nome: str):
-        # TODO: validar + atualizar nome
-        pass
+        if len(novo_nome) <= 3:
+            raise ValueError ("Nome tem que ter mais de 3 caracteres.")
+        else:
+            self._nome = novo_nome
+
     def adicionar_voo(self, voo):
-        # TODO: adicionar voo à lista
-        pass
+        self.voos.append(voo)
+
     def buscar_voo(self, numero: str):
-        # TODO: retornar voo ou None
-        pass
+        for voo in self.voos:
+            if numero == voo.numero_voo:
+                return voo
+        return None
+    
     def listar_voos(self):
-        # TODO: imprimir todos os voos
-        pass
+        for voo in self.voos:
+            print(F"Voo de numero: {voo.numero_voo} que sai do {voo.origem}")
 
 
 # -------------------------------------------------
@@ -187,3 +196,18 @@ class CompanhiaAerea:
 #       ▸ existe ao menos 1 tripulante
 #     imprime relatório de conformidade
 #   • __str__() → "Auditor <nome> (ID: ...)"
+
+class Auditor(IdentificavelMixin, Logavel):
+    def __init__(self, nome):
+        IdentificavelMixin.__init__(self)
+        self.nome = nome
+
+    def logar_entrada(self):
+        print("Auditor logou no sistema")
+
+    def auditar_voo(self, voo):
+        if len(voo.passageiros) <= voo.aeronave.capacidade and len(voo.tripulacao) >= 1:
+            print("Voo está apto a ser feito")
+
+    def __str__(self):
+        return f"Auditor de nome: {self.nome} com ID: {self.get_id()}"

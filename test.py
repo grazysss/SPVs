@@ -86,3 +86,22 @@ voo1.listar_passageiros()
 voo1.listar_tripulacao()
 voo2.listar_tripulacao()
 voo2.listar_passageiros()
+
+print()
+
+comp = CompanhiaAerea("PEDRO")
+print(comp.nome)
+comp.nome = "Yonara" 
+print(comp.nome)
+
+comp.adicionar_voo(voo1)
+voo3 = comp.buscar_voo("1")
+print(voo3.numero_voo)
+comp.listar_voos()
+
+print()
+
+a1 = Auditor("Samuel")
+a1.logar_entrada()
+a1.auditar_voo(voo3)
+print(a1)
