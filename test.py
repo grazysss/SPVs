@@ -1,93 +1,88 @@
 from sistema_voos import *
 
-# -------------------------------------------------
-# 11) Bloco de teste                             🡇
-# -------------------------------------------------
-if __name__ == "__main__":
-    gol = CompanhiaAerea("GOL")
-    latam = CompanhiaAerea("LATAM")
-    
-    # Create aircraft
-    boeing737 = MiniAeronave("Boeing 737", 150)
-    airbus320 = MiniAeronave("Airbus A320", 180)
-    
-    # Create flights
-    voo_gol1 = Voo("GOL123", "São Paulo", "Rio de Janeiro", boeing737)
-    voo_gol2 = Voo("GOL456", "Rio de Janeiro", "Brasília", boeing737)
-    voo_latam1 = Voo("LAT789", "São Paulo", "New York", airbus320)
-    voo_latam2 = Voo("LAT012", "New York", "Miami", airbus320)
-    
-    # Add flights to airlines
-    gol.adicionar_voo(voo_gol1)
-    gol.adicionar_voo(voo_gol2)
-    latam.adicionar_voo(voo_latam1)
-    latam.adicionar_voo(voo_latam2)
-    
-    # Create passengers
-    passenger1 = Passageiro("João Silva", "111.222.333-44")
-    passenger2 = Passageiro("Maria Santos", "222.333.444-55")
-    passenger3 = Passageiro("Carlos Oliveira", "333.444.555-66")
-    passenger4 = Passageiro("Ana Pereira", "444.555.666-77")
-    
-    # Add baggage to passengers
-    passenger1.adicionar_bagagem(Bagagem("Mala grande", 23.5))
-    passenger1.adicionar_bagagem(Bagagem("Mochila", 5.0))
-    passenger2.adicionar_bagagem(Bagagem("Mala média", 15.0))
-    passenger3.adicionar_bagagem(Bagagem("Mala pequena", 10.0))
-    
-    # Create employees
-    employee1 = Funcionario("Pedro Alves", "555.666.777-88", "Piloto", "MAT001")
-    employee2 = Funcionario("Luiza Costa", "666.777.888-99", "Comissária", "MAT002")
-    employee3 = Funcionario("Marcos Rocha", "777.888.999-00", "Co-piloto", "MAT003")
-    
-    # Add passengers to flights
-    voo_gol1.adicionar_passageiros(passenger1)
-    voo_gol1.adicionar_passageiros(passenger2)
-    voo_gol2.adicionar_passageiros(passenger3)
-    voo_latam1.adicionar_passageiros(passenger4)
-    
-    # Try to add passenger beyond capacity
-    for i in range(149):  # Already has 2 passengers, adding 149 more (total 151 > 150 capacity)
-        temp_passenger = Passageiro(f"Passenger{i}", f"000.000.000-{i:02d}")
-        voo_gol1.adicionar_passageiros(temp_passenger)
-    
-    # Add crew to flights
-    voo_gol1.adicionar_tripulante(employee1)
-    voo_gol1.adicionar_tripulante(employee2)
-    voo_latam1.adicionar_tripulante(employee1)
-    voo_latam1.adicionar_tripulante(employee3)
-    
-    # Create auditor
-    auditor = Auditor("Roberto Auditório")
-    
-    # Log employee entries
-    employee1.logar_entrada()
-    employee2.logar_entrada()
-    
-    # Audit flights
-    print("\nAuditing flights:")
-    auditor.auditar_voo(voo_gol1)
-    auditor.auditar_voo(voo_latam1)
-    
-    # List flights
-    print("\nGOL flights:")
-    gol.listar_voos()
-    
-    print("\nLATAM flights:")
-    latam.listar_voos()
-    
-    # List passengers and their baggage
-    print("\nPassengers on GOL123:")
-    voo_gol1.listar_passageiros()
-    
-    print("\nPassenger1's baggage:")
-    passenger1.listar_bagagens()
-    
-    # Show employee data
-    print("\nEmployee data:")
-    employee1.exibir_dados()
-    employee2.exibir_dados()
-    
-    # Show auditor info
-    print("\nAuditor info:")
-    print(auditor)
+# OS ZEROTWO - Objetos da Classe Pessoa
+p1 = Pessoa('Alice', '123.456.789-10')
+p2 = Pessoa('Simon', '109.876.543-21')
+
+p3 = Pessoa('Grazy', '121.212.343-32')
+p4 = Pessoa('Yonara', '125.834.242-88')
+
+# Testando os métodos da Classe Pessoa
+print(p1.nome)
+print(p2.nome)
+
+print()
+
+print(p1.__str__())
+print(p2.__str__())
+
+
+# Criando objetos para a Classe Bagagem
+b1 = ('Brownie', '5kg')
+b2 = ('Fone', '0.1kg')
+b3 = ('Thor', '5kg')
+b4 = ('Computador', '1kg')
+
+print()
+
+# Testando o método de conversão para String
+print(b1.__str__())
+print(b2.__str__())
+
+print()
+
+
+# Criando objetos da Classe Passageiro
+pass1 = Passageiro(p1.nome, p1.cpf)
+pass2 = Passageiro(p2.nome, p2.cpf)
+
+# Testando os métodos da Classe Passageiro em relação a Class Bagagem
+pass1.adicionar_bagagem(b1)
+pass1.adicionar_bagagem(b3)
+pass2.adicionar_bagagem(b2)
+pass2.adicionar_bagagem(b4)
+
+pass1.listar_bagagens()
+pass2.listar_bagagens()
+
+
+# Criando objetos para a Classe Funcionário
+f1 = Funcionario(p3.nome, p3.cpf, 'Serva', '1234-5')
+f2 = Funcionario(p4.nome, p4.cpf, 'Serva', '5432-1')
+
+print()
+
+# Testando os métodos da CLasse Funcionário
+f1.exibir_dados()
+f2.exibir_dados()
+
+print()
+
+f1.logar_entrada()
+f2.logar_entrada()
+
+
+# Criando objetos da Classe MiniAeronave
+ma1 = MiniAeronave('boeing-777', 20)
+ma2 = MiniAeronave('boeing-444', 30)
+
+print()
+
+# Criando objetos da Classe Voo
+voo1 = Voo('1', 'Brasil', 'Itália', ma1)
+voo2 = Voo('2', 'Brasil', 'Suiça', ma2)
+
+voo1.adicionar_passageiro(pass1)
+voo2.adicionar_passageiro(pass2)
+
+print()
+
+voo1.adicionar_tripulante(f1)
+voo2.adicionar_tripulante(f2)
+
+print()
+
+voo1.listar_passageiros()
+voo1.listar_tripulacao()
+voo2.listar_tripulacao()
+voo2.listar_passageiros()
