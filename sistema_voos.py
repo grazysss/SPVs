@@ -90,7 +90,7 @@ class Funcionario(Pessoa, IdentificavelMixin, Logavel):
         print(f'Nome: {self.nome}')
         print(f'Cargo: {self.cargo}')
         print(f'Matrícula: {self.matricula}')
-        print(f'ID: {self.get_id}')
+        print(f'ID: {self.get_id()}')
 
     def logar_entrada(self):
         print(f'[LOG] Entrada de {self.nome} registrada no LOG.')
@@ -113,11 +113,11 @@ class MiniAeronave:
 # -------------------------------------------------
 
 class Voo:
-    def __init__(self, numero_voo, origem, destino, MiniAeronave):
+    def __init__(self, numero_voo, origem, destino, aeronave):
         self.numero_voo = numero_voo
         self.origem = origem
         self.destino = destino
-        self.aeronave =  MiniAeronave
+        self.aeronave =  aeronave
         self.passageiros = []
         self.tripulacao = []
 
@@ -151,18 +151,17 @@ class Voo:
 # 9) CompanhiaAerea                              🡇
 # -------------------------------------------------
 class CompanhiaAerea:
-    """Agrupa seus voos (has-a)."""
     def __init__(self, nome):
         if len(nome) <= 3:
-            raise ValueError ("O nome tem que ter mais de 3 caracteres")
+                raise ValueError ()
         else:
             self._nome = nome
             self.voos = []
-            
+
     @property
     def nome(self):
         return self._nome
-        
+    
     @nome.setter
     def nome(self, novo_nome):
         if len(novo_nome) <= 3:
@@ -181,7 +180,7 @@ class CompanhiaAerea:
     
     def listar_voos(self):
         for voo in self.voos:
-            print(F"Voo de número: {voo.numero_voo} - Origem: {voo.origem}")
+            print(F"Voo de número: {voo.numero_voo} | Origem: {voo.origem} - Destino: {voo.destino}")
 
 class Auditor(IdentificavelMixin, Logavel):
     def __init__(self, nome):
