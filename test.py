@@ -89,19 +89,22 @@ voo2.listar_passageiros()
 
 print()
 
-comp = CompanhiaAerea("PEDRO")
+# Criando objetos da Classe CompanhiaAerea
+comp = CompanhiaAerea("AZUL")
 print(comp.nome)
-comp.nome = "Yonara" 
+comp.nome = "LATAM" 
 print(comp.nome)
 
+# Teste dos métodos da Classe CompanhiaAerea
 comp.adicionar_voo(voo1)
+comp.adicionar_voo(voo2)
 voo3 = comp.buscar_voo("1")
 print(voo3.numero_voo)
 comp.listar_voos()
 
 print()
 
-a1 = Auditor("Samuel")
+a1 = Auditor("Demetrios")
 a1.logar_entrada()
 a1.auditar_voo(voo3)
 print(a1)

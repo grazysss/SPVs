@@ -158,12 +158,13 @@ class CompanhiaAerea:
         else:
             self._nome = nome
             self.voos = []
+            
     @property
     def nome(self):
         return self._nome
         
     @nome.setter
-    def nome(self, novo_nome: str):
+    def nome(self, novo_nome):
         if len(novo_nome) <= 3:
             raise ValueError ("Nome tem que ter mais de 3 caracteres.")
         else:
@@ -172,7 +173,7 @@ class CompanhiaAerea:
     def adicionar_voo(self, voo):
         self.voos.append(voo)
 
-    def buscar_voo(self, numero: str):
+    def buscar_voo(self, numero):
         for voo in self.voos:
             if numero == voo.numero_voo:
                 return voo
@@ -180,22 +181,7 @@ class CompanhiaAerea:
     
     def listar_voos(self):
         for voo in self.voos:
-            print(F"Voo de numero: {voo.numero_voo} que sai do {voo.origem}")
-
-
-# -------------------------------------------------
-# 10) Auditor (Identificável + Logável)          🡇
-# -------------------------------------------------
-# TODO: Implementar a classe Auditor
-# - Herda de IdentificavelMixin e Logavel
-# - Atributo: nome
-# - Métodos:
-#   • logar_entrada() → registra entrada no sistema
-#   • auditar_voo(voo) → verifica:
-#       ▸ passageiros ≤ capacidade
-#       ▸ existe ao menos 1 tripulante
-#     imprime relatório de conformidade
-#   • __str__() → "Auditor <nome> (ID: ...)"
+            print(F"Voo de número: {voo.numero_voo} - Origem: {voo.origem}")
 
 class Auditor(IdentificavelMixin, Logavel):
     def __init__(self, nome):
@@ -203,11 +189,11 @@ class Auditor(IdentificavelMixin, Logavel):
         self.nome = nome
 
     def logar_entrada(self):
-        print("Auditor logou no sistema")
+        print(f"{self.nome} entrou no sistema")
 
     def auditar_voo(self, voo):
         if len(voo.passageiros) <= voo.aeronave.capacidade and len(voo.tripulacao) >= 1:
-            print("Voo está apto a ser feito")
+            print("Voo está apto a ser realizado!")
 
     def __str__(self):
         return f"Auditor de nome: {self.nome} com ID: {self.get_id()}"
