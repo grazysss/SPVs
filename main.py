@@ -1,4 +1,4 @@
-from sistema_voos import *
+from sistema_voos import Pessoa, Funcionario, Passageiro,Auditor, Voo, MiniAeronave, CompanhiaAerea
 
 if __name__ == "__main__":
     # OS ZEROTWO - Objetos da Classe Pessoa
